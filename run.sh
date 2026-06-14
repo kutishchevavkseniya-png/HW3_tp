@@ -42,6 +42,19 @@ case "${1:-}" in
   inside_reporter)
     docker run --rm -v "$data_direction:/data" "$reporter_image_name" sh
     ;;
+    report_server)
+    if [ ! -f "$data_direction/report.html" ]; then
+      echo "Файл data/report.html не найден. Сначала запустите:"
+      echo "  ./run.sh run_generator"
+      echo "  ./run.sh run_reporter"
+      exit 1
+    fi
+
+    docker run --rm \
+      -p 8080:80 \
+      -v "$data_direction:/usr/share/nginx/html:ro" \
+      nginx:alpine
+    ;;
 
   *)
     echo "Использование: ./run.sh <command>"
@@ -54,6 +67,7 @@ case "${1:-}" in
     echo "  clear_data"
     echo "  inside_generator"
     echo "  inside_reporter"
+    echo "  report_server     открыть report.html через веб-сервер"
     exit 1
     ;;
 esac
