@@ -28,7 +28,10 @@ case "${1:-}" in
     ;;
 
   structure)
-    find "$project_direction" -maxdepth 3 -print
+    find "$project_direction" -maxdepth 3 \
+      -path "$project_direction/.git" -prune -o \
+      -path "$project_direction/node_modules" -prune -o \
+      -print
     ;;
 
   clear_data)
@@ -36,13 +39,14 @@ case "${1:-}" in
     ;;
 
   inside_generator)
-    docker run --rm -v "$data_direction:/data" "$generator_image_name" sh
+    docker run --rm -v "$data_direction:/data" "$generator_image_name" sh -c "ls -la /data"
     ;;
 
   inside_reporter)
-    docker run --rm -v "$data_direction:/data" "$reporter_image_name" sh
+    docker run --rm -v "$data_direction:/data" "$reporter_image_name" sh -c "ls -la /data"
     ;;
-    report_server)
+
+  report_server)
     if [ ! -f "$data_direction/report.html" ]; then
       echo "Файл data/report.html не найден. Сначала запустите:"
       echo "  ./run.sh run_generator"
@@ -67,7 +71,7 @@ case "${1:-}" in
     echo "  clear_data"
     echo "  inside_generator"
     echo "  inside_reporter"
-    echo "  report_server     открыть report.html через веб-сервер"
+    echo "  report_server"
     exit 1
     ;;
 esac

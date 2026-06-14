@@ -5,11 +5,10 @@ import sys
 
 NUM_ROWS = 50
 
-
 COLUMNS = ["STUDENT_NUMBER", "DICRETE_MATH_GRADE", "STUDENT'S_APPEARANCE_GRATE", "STUDENT'S_CLASS"]
 
-def generate_row():
 
+def generate_row():
     return {
         "STUDENT_NUMBER": random.randint(0, 100),
         "DICRETE_MATH_GRADE": round(random.uniform(1.5, 9.9), 2),
@@ -29,3 +28,4 @@ with open(OUTPUT_FILE, "w", newline="", encoding="utf-8") as f:
     writer.writeheader()
     writer.writerows(rows)
 
+print(f"CSV saved to {OUTPUT_FILE}")

@@ -19,7 +19,6 @@ for (const col of columns) {
   const numericValues = rawValues.map(v => parseFloat(v)).filter(v => !isNaN(v));
 
   if (numericValues.length === rawValues.length) {
-    // Все значения числовые
     numericStats[col] = {
       count: numericValues.length,
       min: Math.min(...numericValues).toFixed(2),
@@ -27,7 +26,6 @@ for (const col of columns) {
       mean: (numericValues.reduce((a, b) => a + b, 0) / numericValues.length).toFixed(2),
     };
   } else {
-
     const freq = {};
     for (const v of rawValues) {
       freq[v] = (freq[v] || 0) + 1;
